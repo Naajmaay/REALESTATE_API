@@ -1,10 +1,8 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import PropertyViewSet
-
-router = DefaultRouter()
-router.register(r'', PropertyViewSet)
+from django.urls import path
+from . import views
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('', views.property_list, name='property_list'),
+    path('<int:id>/', views.property_detail, name='property_detail'),
+    path('<int:id>/edit/', views.property_edit, name='property_edit'),
 ]

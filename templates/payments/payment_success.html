@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment Successful</title>
+    <style>
+        body { font-family: Arial; padding: 30px; text-align: center; }
+    </style>
+</head>
+<body>
+    <h1>Payment Successful</h1>
+    <p>Thank you! Payment has been recorded.</p>
+
+    <p><strong>Amount:</strong> {{ payment.amount }}</p>
+    <p><strong>Method:</strong> {{ payment.method }}</p>
+    <p><strong>Transaction ID:</strong> {{ payment.transaction_id }}</p>
+
+    <a href="/bookings/" style="text-decoration:none; padding:10px; background:#007bff; color:white;">Back to Bookings</a>
+</body>
+</html>

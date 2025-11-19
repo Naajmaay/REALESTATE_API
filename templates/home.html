@@ -3,104 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Real Estate</title>
-    <style>
-        body {
-            font-family: 'Comic Sans MS', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(to bottom right, #ffe6f0, #fff0f7);
-            margin: 0;
-            padding: 0;
-            color: #5a2a50;
-        }
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 80px 20px;
-            text-align: center;
-        }
-        h1 {
-            font-size: 3em;
-            margin-bottom: 20px;
-            color: #ff66b3;
-            text-shadow: 1px 1px 2px #ffb3d9;
-        }
-        p {
-            font-size: 1.2em;
-            margin-bottom: 40px;
-            color: #a64d79;
-            line-height: 1.6;
-        }
-        .feature {
-            background-color: #fff0f5;
-            padding: 25px 20px;
-            margin: 20px 0;
-            border-radius: 20px;
-            box-shadow: 0 8px 20px rgba(255, 105, 180, 0.2);
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
-
-        .feature:hover {
-            transform: translateY(-5px);
-        }
-
-        .feature h2 {
-            color: #ff3399;
-            margin-bottom: 10px;
-        }
-
-        .feature p {
-            color: #993366;
-        }
-        .btn {
-            display: inline-block;
-            margin: 15px 10px 0 0;
-            padding: 12px 30px;
-            background-color: #ff66b3;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: bold;
-            font-size: 1em;
-            transition: all 0.3s ease;
-            box-shadow: 0 6px 15px rgba(255, 105, 180, 0.3);
-        }
-
-        .btn:hover {
-            background-color: #ff3399;
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 8px 20px rgba(255, 105, 180, 0.5);
-        }
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 2.2em;
-            }
-            p {
-                font-size: 1.05em;
-            }
-            .btn {
-                padding: 10px 25px;
-                font-size: 0.95em;
-            }
-        }
-    </style>
+    <title>Real Estate Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <div class="container">
-        <h1>Welcome to the future of real estate</h1>
-        <p>Discover  properties, and book viewings with ease. Your dream home is just a click away!</p>
+<body class="bg-gray-100 font-sans">
 
-         <div class="feature">
-            <h2>Properties</h2>
-            <p>Explore a wide range of dreamy properties for sale or rent. High-quality listings with cute details!</p>
-            <a class="btn" href="/properties/">View Properties</a>
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-gray-800">Future of Real Estate</h1>
+            <div class="flex items-center space-x-4">
+                <span class="text-gray-700">Welcome, {{ user.username }}</span>
+                
+                <!-- Logout Form -->
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main content -->
+    <main class="container mx-auto mt-10 px-4">
+        <div class="text-center mb-8">
+        
+            <p class="text-gray-600 mt-2">
+                {% if role == 'seller' %}
+                    Manage your properties and view bookings
+                {% else %}
+                    Browse properties and make bookings
+                {% endif %}
+            </p>
         </div>
 
-        <div class="feature">
-            <h2>Bookings</h2>
-            <p>Schedule property viewings easily. Reserve visits to the homes you adore in just a few clicks!</p>
-            <a class="btn" href="/bookings/">Make a Booking</a>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {% if role == 'seller' %}
+                <a href="{% url 'property_list' %}" class="bg-white shadow rounded p-6 hover:shadow-lg transition">
+                    <h3 class="text-xl font-semibold text-gray-800">View Your Properties</h3>
+                    <p class="text-gray-600 mt-2">Edit and manage the properties you are selling.</p>
+                </a>
+                <a href="{% url 'booking_list' %}" class="bg-white shadow rounded p-6 hover:shadow-lg transition">
+                    <h3 class="text-xl font-semibold text-gray-800">View Bookings</h3>
+                    <p class="text-gray-600 mt-2">See who has booked your properties.</p>
+                </a>
+            {% else %}
+                <a href="{% url 'property_list' %}" class="bg-white shadow rounded p-6 hover:shadow-lg transition">
+                    <h3 class="text-xl font-semibold text-gray-800">Browse Properties</h3>
+                    <p class="text-gray-600 mt-2">Find properties to book as a buyer.</p>
+                </a>
+                <a href="{% url 'booking_list' %}" class="bg-white shadow rounded p-6 hover:shadow-lg transition">
+                    <h3 class="text-xl font-semibold text-gray-800">Your Bookings</h3>
+                    <p class="text-gray-600 mt-2">View your previous bookings and messages.</p>
+                </a>
+            {% endif %}
         </div>
-    </div>
+    </main>
+
 </body>
 </html>

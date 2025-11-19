@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Properties</title>
+
+    <style>
+        body {
+            background: #f4f4f4;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .property-card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: 0.3s ease;
+            background: white;
+        }
+
+        .property-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .property-img {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .no-img {
+            height: 200px;
+            width: 100%;
+            background: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #777;
+            font-size: 14px;
+        }
+
+        .card-body {
+            padding: 15px;
+        }
+
+        .price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #28a745;
+            margin-bottom: 5px;
+        }
+
+        .btn {
+            background: black;
+            color: white;
+            padding: 8px 15px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+
+        .btn:hover {
+            background: #333;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .col-md-4 {
+            flex: 1 1 calc(33% - 20px);
+            min-width: 280px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="header">
+            <h1>Available Properties</h1>
+
+            <div>
+                <a href="{% url 'property_edit' 0 %}" class="btn">Add Property</a>
+                <a href="{% url 'booking_list' %}" class="btn">View Bookings</a>
+            </div>
+        </div>
+
+        {% if properties %}
+            <div class="row">
+                {% for prop in properties %}
+                    <div class="col-md-4">
+                        <div class="property-card">
+
+                            {% if prop.image %}
+                                <img src="{{ prop.image.url }}" class="property-img">
+                            {% else %}
+                                <div class="no-img">No Image</div>
+                            {% endif %}
+
+                            <div class="card-body">
+                                <h3>{{ prop.title }}</h3>
+                                <p class="price">KES {{ prop.price }}</p>
+                                <p>{{ prop.location }}</p>
+
+                                <a href="{% url 'property_detail' prop.id %}" class="btn">View Details</a>
+                            </div>
+
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+        {% else %}
+            <p style="text-align:center; margin-top:20px;">No properties available.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

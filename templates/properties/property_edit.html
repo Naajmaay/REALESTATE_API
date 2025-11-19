@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if form.instance.id %}Edit Property{% else %}Add Property{% endif %}</title>
+
+    <style>
+        body {
+            background: #f4f4f4;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 25px 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 24px;
+            color: #222;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 18px;
+            border-radius: 6px;
+            border: 1px solid #cfcfcf;
+            font-size: 15px;
+        }
+
+        button.btn {
+            width: 100%;
+            background: black;
+            padding: 12px;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button.btn:hover {
+            background: #333;
+        }
+
+        a.back-btn {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            padding: 10px;
+            background: #555;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        a.back-btn:hover {
+            background: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <h1>
+            {% if form.instance.id %}
+                Edit Property
+            {% else %}
+                Add Property
+            {% endif %}
+        </h1>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn">Save Property</button>
+        </form>
+
+        <a href="{% url 'property_list' %}" class="back-btn">Back to Properties</a>
+
+    </div>
+</body>
+</html>

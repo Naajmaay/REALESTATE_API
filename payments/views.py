@@ -1,18 +1,31 @@
-from rest_framework import viewsets
-from rest_framework.response import Response
-from rest_framework import status
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Payment
-from .serializers import PaymentSerializer
+from .forms import PaymentForm
+from bookings.models import Booking
 
-class PaymentViewSet(viewsets.ModelViewSet):
-    queryset = Payment.objects.all()
-    serializer_class = PaymentSerializer
+def payment_create(request, booking_id):
+    booking = get_object_or_404(Booking, id=booking_id)
 
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        return Response(
-            {"message": "Payment initiated successfully", "payment": serializer.data},
-            status=status.HTTP_201_CREATED
-        )
+    # Prevent duplicate payment
+    if hasattr(booking, 'payment'):
+        return redirect('payment_success', payment_id=booking.payment.id)
+
+    if request.method == "POST":
+        form = PaymentForm(request.POST)
+        if form.is_valid():
+            payment = form.save(commit=False)
+            payment.booking = booking
+            payment.save()
+            return redirect('payment_success', payment.id)
+    else:
+        form = PaymentForm(initial={'amount': 1000})  # Default value
+
+    return render(request, 'payments/payment_form.html', {
+        'form': form,
+        'booking': booking
+    })
+
+
+def payment_success(request, payment_id):
+    payment = get_object_or_404(Payment, id=payment_id)
+    return render(request, 'payments/payment_success.html', {'payment': payment})
